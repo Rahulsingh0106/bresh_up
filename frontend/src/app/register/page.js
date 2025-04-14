@@ -63,7 +63,7 @@ export default function RegisterPage() {
             localStorage.setItem("user", JSON.stringify(data.user));
 
             // Redirect to Dashboard
-            router.push("/dashboard");
+            router.push("/profile");
         } catch (error) {
             setErrors({ "login_error": error.message });
         }

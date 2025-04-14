@@ -19,7 +19,6 @@ router.get("/getUser", async (req, res) => {
 router.post("/register", upload.single("resume"), async (req, res) => {
     try {
         let text;
-        console.log(req.body)
         const { name, email, password } = req.body;
         if (!name || !email || !password || !req.file) {
             return res.status(400).json({ error: "Please enter all fields" });
@@ -71,12 +70,13 @@ router.post("/login", async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({ error: "Invalid credentials" });
         }
-
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+        console.log(user)
+        const token = jwt.sign({ data: user }, process.env.JWT_SECRET, { expiresIn: "1d" });
         res.status(200).json({ message: "Login Successfully", token });
     } catch (error) {
         res.status(500).json({ error: "Server error" });
     }
 })
+
 
 module.exports = router;

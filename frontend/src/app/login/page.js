@@ -26,12 +26,14 @@ export default function LoginPage() {
             });
 
             const data = await res.json();
+            console.log(data)
             if (!res.ok) throw new Error(data.message || "Login failed");
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("user", JSON.stringify(data.user));
+            localStorage.setItem("token", JSON.stringify(data));
+            // localStorage.setItem("user", JSON.stringify(data.user));
 
             // Redirect to Dashboard
-            router.push("/dashboard");
+            // router.push("/dashboard");
+            router.push("/profile");
         } catch (error) {
             setErrors({ "login_error": error.message });
         }
