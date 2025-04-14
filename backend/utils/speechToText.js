@@ -2,9 +2,8 @@ const speech = require("@google-cloud/speech");
 const fs = require("fs");
 
 // Load credentials from JSON key file
-
 const client = new speech.SpeechClient({
-    keyFilename: "C:/Users/rahul/Downloads/quiet-terra-454403-j7-ba235d9996e1.json", // Update this path
+    keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON
 });
 
 // Function to transcribe audio
