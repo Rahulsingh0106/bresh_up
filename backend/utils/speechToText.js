@@ -1,10 +1,17 @@
 const speech = require("@google-cloud/speech");
+const { GoogleAuth } = require("google-auth-library")
 const fs = require("fs");
+require("dotenv").config();
 
+const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
 // Load credentials from JSON key file
-const client = new speech.SpeechClient({
-    keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON
+const auth = new GoogleAuth({
+    credentials: credentials,
+    scopes: "https://www.googleapis.com/auth/cloud-platform",
 });
+
+// Initialize the Speech Client with the authentication object
+const client = new speech.SpeechClient({ auth });
 
 // Function to transcribe audio
 const transcribeAudio = async (audioBuffer) => {

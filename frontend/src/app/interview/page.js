@@ -34,7 +34,7 @@ const InterviewPage = () => {
         formData.append("audio", blob, "audio.webm");
 
         try {
-            const response = await fetch("http://localhost:5000/api/transcribe", {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/transcribe`, {
                 method: "POST",
                 body: formData,
             });
