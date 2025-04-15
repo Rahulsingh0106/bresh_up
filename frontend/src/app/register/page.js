@@ -52,7 +52,7 @@ export default function RegisterPage() {
             formData.append("password", form.password);
             formData.append("resume", resume);
 
-            const res = await fetch("http://localhost:5000/api/auth/register", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/register`, {
                 method: "POST",
                 body: formData,
             });
@@ -82,7 +82,7 @@ export default function RegisterPage() {
                 <CardContent className="space-y-4">
                     {errors.login_error && <p className="text-red-500 text-sm">{errors.login_error}</p>}
                     <div>
-                        <Label htmlFor="name">Name</Label>
+                        <Label htmlFor="name" className="mb-2">Name</Label>
                         <Input
                             id="name"
                             name="name"
@@ -96,7 +96,7 @@ export default function RegisterPage() {
 
                     {/* Email Field */}
                     <div>
-                        <Label htmlFor="email">Email</Label>
+                        <Label htmlFor="email" className="mb-2">Email</Label>
                         <Input
                             id="email"
                             name="email"
@@ -110,7 +110,7 @@ export default function RegisterPage() {
 
                     {/* Password Field */}
                     <div>
-                        <Label htmlFor="password">Password</Label>
+                        <Label htmlFor="password" className="mb-2">Password</Label>
                         <Input
                             id="password"
                             name="password"
@@ -134,7 +134,7 @@ export default function RegisterPage() {
                     </div>
                     {/* Register Button */}
                     <Button
-                        className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+                        className="w-full text-white"
                         onClick={handleSubmit}
                     >
                         Register

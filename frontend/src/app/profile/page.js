@@ -14,7 +14,7 @@ const page = () => {
 
     async function fetchProfileData() {
         const token = localStorage.getItem("token")
-        const result = await fetch("http://localhost:5000/api/profile/", {
+        const result = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/profile/`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`

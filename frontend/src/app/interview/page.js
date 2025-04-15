@@ -3,12 +3,10 @@
 import { useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import dynamic from "next/dynamic";
-import { AIModel, ConvertTextToSpeech, getToken } from "@/services/GlobalServices";
-import { Input } from "@/components/ui/input";
+import { AIModel, ConvertTextToSpeech } from "@/services/GlobalServices";
 import { Loader2Icon } from "lucide-react";
 import ChatBox from "./components/ChatBox";
 import { useAuthRedirect } from "@/hooks/useAuth";
-import { useRouter } from "next/navigation";
 // Dynamically import RecordRTC (without SSR)
 const RecordRTC = dynamic(() => import("recordrtc").then(mod => mod.default), { ssr: false });
 
@@ -163,7 +161,7 @@ const InterviewPage = () => {
                         )}
                     </div>
                 </div>
-                <ChatBox conversation={conversation} sendMsg={sendMsg} userInput={userInput} setUserInput={setUserInput} />
+                <ChatBox conversation={conversation} sendMsg={sendMsg} userInput={userInput} setUserInput={setUserInput} loading={loading} enableMic={enableMic} />
 
             </div>
         </div>

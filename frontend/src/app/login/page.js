@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import toast from 'react-hot-toast';
 
 export default function LoginPage() {
 
@@ -17,25 +18,34 @@ export default function LoginPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(form)
+        setErrors({}); // Clear previous errors
+        if (!form.email || !form.password) {
+            toast.error("Email and password fields are required.")
+            // setErrors({ login_error: "Email and password are required" });
+            return;
+        }
+
         try {
-            const res = await fetch("http://localhost:5000/api/auth/login", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(form),
             });
 
             const data = await res.json();
-            console.log(data)
-            if (!res.ok) throw new Error(data.message || "Login failed");
-            localStorage.setItem("token", JSON.stringify(data));
-            // localStorage.setItem("user", JSON.stringify(data.user));
+            if (!res.ok) {
+                toast.error(JSON.stringify(data.error))
+            }
+            else {
+                toast.success("User login successfully.")
+                localStorage.setItem("token", JSON.stringify(data.data));
 
-            // Redirect to Dashboard
-            // router.push("/dashboard");
-            router.push("/profile");
+                // Redirect to Dashboard
+                router.push("/dashboard");
+            }
+
         } catch (error) {
-            setErrors({ "login_error": error.message });
+            toast.error("Something went wrong! Please try later again.")
         }
     };
 
@@ -54,7 +64,7 @@ export default function LoginPage() {
                 <CardContent className="space-y-4">
                     {errors.login_error && <p className="text-red-500 text-sm">{errors.login_error}</p>}
                     <div>
-                        <Label htmlFor="email">Email</Label>
+                        <Label htmlFor="email" className="mb-2">Email</Label>
                         <Input
                             id="email"
                             type="email"
@@ -65,7 +75,7 @@ export default function LoginPage() {
                     </div>
 
                     <div>
-                        <Label htmlFor="password">Password</Label>
+                        <Label htmlFor="password" className="mb-2">Password</Label>
                         <Input
                             id="password"
                             type="password"
@@ -76,7 +86,7 @@ export default function LoginPage() {
                     </div>
 
                     <Button
-                        className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+                        className="w-full text-white"
                         onClick={handleSubmit}
                     >
                         Login

@@ -1,40 +1,26 @@
 "use client";
-import { useAuthRedirect } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-
-import Navbar from "@/components/Navbar";
+import { Bot, SquareChartGantt } from "lucide-react";
+import Link from "next/link";
 
 export default function Dashboard() {
-    // const { loading } = useAuthRedirect();
-    // const router = useRouter();
-
-    // if (loading) return <p className="text-center mt-10">Loading...</p>;
-
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        router.push("/login");
-    };
-
     return (
-        // <div className="grid">
         <>
-            {/* <Navbar /> */}
-            <div className="mt-5 grid grid-cols-1 lg:grid-cols-3 gap-10">
-                {/* Sidebar component */}
-                <div className="lg:col-span-2">
-                    {/* <img src="/Screenshot.png" className="intem-center justify-center object-cover" /> */}
-                    {/* 
-                    <div className="flex flex-col sitems-center justify-center min-h-screen bg-gray-50">
-                        <h1 className="text-3xl font-bold">Welcome to Dashboard</h1>
-                        <Button onClick={handleLogout} classq Name="mt-4 bg-red-500 hover:bg-red-600 text-white">
-                            Logout
+            <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+                <h1 className="text-5xl font-bold mb-3">Welcome to Dashboard</h1>
+                <div className="flex-row">
+                    <Link href="/roadmap">
+                        <Button className="mt-4 mx-2 text-white">
+                            <SquareChartGantt /> Build Your Roadmap
                         </Button>
-                    </div> */}
+                    </Link>
+                    <Link href="/interview">
+                        <Button className="mt-2 text-white">
+                            <Bot /> AI Mock Interviewer
+                        </Button>
+                    </Link>
                 </div>
             </div >
-            {/* </div > */}
         </>
     );
 }

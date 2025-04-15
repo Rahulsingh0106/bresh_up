@@ -5,6 +5,8 @@ import ReactFlow, {
     Controls,
     Background,
     addEdge,
+    applyNodeChanges,
+    applyEdgeChanges,
     ReactFlowProvider,
 } from "reactflow";
 import "reactflow/dist/style.css";
@@ -15,12 +17,21 @@ export default function Roadmap() {
     const [reactFlowInstance, setReactFlowInstance] = useState(null);
     const [selectedNodeId, setSelectedNodeId] = useState(null);
     const [editLabel, setEditLabel] = useState("");
+    const [roadmapTitle, setRoadmapTitle] = useState("");
 
     const onNodeClick = useCallback((event, node) => {
         event.preventDefault();
         setSelectedNodeId(node.id);
         setEditLabel(node.data.label || "");
     }, []);
+
+    const onNodesChange = useCallback((changes) => {
+        setNodes((nds) => applyNodeChanges(changes, nds));
+    }, [setNodes]);
+
+    const onEdgesChange = useCallback((changes) => {
+        setEdges((eds) => applyEdgeChanges(changes, eds));
+    }, [setEdges]);
 
     const onConnect = useCallback(
         (params) => setEdges((eds) => addEdge(params, eds)),
@@ -48,12 +59,32 @@ export default function Roadmap() {
         [reactFlowInstance, addNewNode]
     );
 
+    const saveRoadmap = async () => {
+        if (!roadmapTitle.trim()) {
+            alert("Please enter a roadmap title before saving.");
+            return;
+        }
+
+        const roadmapData = {
+            title: roadmapTitle.trim(),
+            nodes,
+            edges,
+            createdBy: "user123",
+            createdAt: new Date().toISOString(),
+        };
+
+        console.log("📦 Roadmap JSON:", roadmapData);
+    };
+
     return (
-        <div className="h-screen flex">
-            {/* Sidebar */}
+        <div className="h-[90vh] flex">
+            {/* Left Sidebar */}
             <div className="w-1/5 p-4 border-r space-y-4 bg-gray-50">
                 <h2 className="text-lg font-semibold mb-4">Drag to add steps</h2>
-                {["Title", "Topic", "Sub Topic", "Paragraph", "Label", "Button", "Legend", "Todo", "Checklist", "Links Group", "Horizontal Line", "Vertical Line", "Resource Button", "Section"].map((label) => (
+                {[
+                    "Title", "Topic", "Sub Topic", "Paragraph", "Label", "Button", "Legend", "Todo",
+                    "Checklist", "Links Group", "Horizontal Line", "Vertical Line", "Resource Button", "Section"
+                ].map((label) => (
                     <div
                         key={label}
                         className="p-2 bg-white border rounded cursor-grab hover:bg-blue-100"
@@ -69,7 +100,22 @@ export default function Roadmap() {
 
             {/* Canvas */}
             <div className="flex-1 p-4 h-full">
-                <h1 className="text-2xl font-bold mb-4">AI Roadmap Creator</h1>
+                {/* <div className="flex items-center gap-4 mb-4">
+                    <input
+                        type="text"
+                        value={roadmapTitle}
+                        onChange={(e) => setRoadmapTitle(e.target.value)}
+                        placeholder="Enter roadmap title..."
+                        className="border px-3 py-2 rounded w-1/3"
+                    />
+                    <button
+                        onClick={saveRoadmap}
+                        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                    >
+                        Save Roadmap
+                    </button>
+                </div> */}
+
                 <div
                     className="border rounded-md h-full"
                     onDrop={onDrop}
@@ -79,11 +125,11 @@ export default function Roadmap() {
                         <ReactFlow
                             nodes={nodes}
                             edges={edges}
-                            onNodesChange={setNodes}
-                            onEdgesChange={setEdges}
+                            onNodesChange={onNodesChange}
+                            onEdgesChange={onEdgesChange}
                             onNodeClick={onNodeClick}
                             onConnect={onConnect}
-                            onInit={setReactFlowInstance} // this gives us access to `project`
+                            onInit={setReactFlowInstance}
                             fitView
                         >
                             <MiniMap />
@@ -93,6 +139,8 @@ export default function Roadmap() {
                     </ReactFlowProvider>
                 </div>
             </div>
+
+            {/* Right Sidebar */}
             {selectedNodeId && (
                 <div className="top-0 right-0 w-1/5 h-full bg-white border-l p-4 shadow-lg z-50">
                     <h2 className="text-lg font-bold mb-4">Edit Node</h2>

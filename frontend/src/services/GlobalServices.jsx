@@ -2,7 +2,6 @@ import axios from 'axios';
 import OpenAI from 'openai';
 import { CoachingOptions } from './Options';
 import { PollyClient, SynthesizeSpeechCommand } from '@aws-sdk/client-polly';
-
 export const getToken = async () => {
     const result = await axios.get('/api/getToken');
     return result.data.token
@@ -17,12 +16,10 @@ const openai = new OpenAI({
 export const AIModel = async (breshupOptions, lastTwoConversation, message = false) => {
     const option = CoachingOptions.find((item) => item.name == breshupOptions);
     console.log(lastTwoConversation)
-    const res = await fetch("http://localhost:5000/api/resume/getUserData", {
-        method: "GET",
-    });
-    const userData = await res.json();
+    let data = JSON.parse(localStorage.getItem("token"))
+    const userData = data.user_details;
     const PROMPT = option.prompt.replace("{user_resume_data}", userData);
-    const completion = await fetch("http://localhost:5000/api/resume/getAiResponse", {
+    const completion = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/resume/getAiResponse`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'

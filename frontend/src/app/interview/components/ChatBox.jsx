@@ -1,8 +1,9 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Loader2Icon } from 'lucide-react'
 import React from 'react'
 
-const ChatBox = ({ conversation, userInput, setUserInput, sendMsg }) => {
+const ChatBox = ({ conversation, userInput, setUserInput, sendMsg, enableMic, loading }) => {
     return (
         <div>
             <div className="flex flex-col h-[70vh] bg-secondary border rounded-4xl p-4">
@@ -28,7 +29,7 @@ const ChatBox = ({ conversation, userInput, setUserInput, sendMsg }) => {
                         value={userInput}
                         onChange={(e) => setUserInput(e.target.value)}
                     />
-                    <Button onClick={sendMsg}>Send</Button>
+                    {!enableMic ? <Button onClick={sendMsg} disabled={!loading}>{loading && < Loader2Icon className="animate-spin" />} Send</Button> : <Button onClick={sendMsg} disabled={loading}>{loading && < Loader2Icon className="animate-spin" />} Send</Button>}
                 </div>
             </div>
         </div>
