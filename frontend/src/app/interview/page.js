@@ -11,9 +11,9 @@ import { useAuthRedirect } from "@/hooks/useAuth";
 const RecordRTC = dynamic(() => import("recordrtc").then(mod => mod.default), { ssr: false });
 
 const InterviewPage = () => {
-    const { checking } = useAuthRedirect();
+    // const { checking } = useAuthRedirect();
 
-    if (checking) return <p className="text-center mt-10">Loading...</p>;
+    // if (checking) return <p className="text-center mt-10">Loading...</p>;
     const [enableMic, setEnableMic] = useState(false);
     const [userInput, setUserInput] = useState("");
     const recorderRef = useRef(null); // Use ref for recorder
@@ -141,28 +141,30 @@ const InterviewPage = () => {
 
 
     return (
-        <div className="p-5 m-5">
-            <h2 className="text-lg font-bold">AI Agent</h2>
-            <div className="mt-5 grid grid-cols-1 lg:grid-cols-3 gap-10">
-                <div className="lg:col-span-2">
-                    <div className="h-[70vh] bg-secondary border rounded-4xl flex flex-col justify-center items-center relative">
-                        <img src="/male-avatar.png" width={200} height={200} className="h-[80px] w-[80px] rounded-full object-cover animate-pulse" />
-                        <h2 className="text-gray-500">Rahul Singh</h2>
-                        <audio src={audioUrl} type="audio/mp3" autoPlay />
-                        <div className="p-5 bg-gray-200 px-10 rounded-lg absolute bottom-10 right-10">
-                            <Button>S</Button>
+        <div className="bg-white">
+            <div className="p-5 m-5">
+                <h2 className="text-lg font-bold">AI Agent</h2>
+                <div className="mt-5 grid grid-cols-1 lg:grid-cols-3 gap-10">
+                    <div className="lg:col-span-2">
+                        <div className="h-[70vh] bg-secondary border rounded-4xl flex flex-col justify-center items-center relative">
+                            <img src="/male-avatar.png" width={200} height={200} className="h-[80px] w-[80px] rounded-full object-cover animate-pulse" />
+                            <h2 className="text-gray-500">Rahul Singh</h2>
+                            <audio src={audioUrl} type="audio/mp3" autoPlay />
+                            <div className="p-5 bg-gray-200 px-10 rounded-lg absolute bottom-10 right-10">
+                                <Button>S</Button>
+                            </div>
+                        </div>
+                        <div className="mt-5 flex items-center justify-center">
+                            {!enableMic ? (
+                                <Button onClick={connectToServer} disabled={loading}>{loading && <Loader2Icon className="animate-spin" />}Connect</Button>
+                            ) : (
+                                <Button variant="destructive" onClick={disconnect} disabled={loading}>{loading && <Loader2Icon className="animate-spin" />}Disconnect</Button>
+                            )}
                         </div>
                     </div>
-                    <div className="mt-5 flex items-center justify-center">
-                        {!enableMic ? (
-                            <Button onClick={connectToServer} disabled={loading}>{loading && <Loader2Icon className="animate-spin" />}Connect</Button>
-                        ) : (
-                            <Button variant="destructive" onClick={disconnect} disabled={loading}>{loading && <Loader2Icon className="animate-spin" />}Disconnect</Button>
-                        )}
-                    </div>
-                </div>
-                <ChatBox conversation={conversation} sendMsg={sendMsg} userInput={userInput} setUserInput={setUserInput} loading={loading} enableMic={enableMic} />
+                    <ChatBox conversation={conversation} sendMsg={sendMsg} userInput={userInput} setUserInput={setUserInput} loading={loading} enableMic={enableMic} />
 
+                </div>
             </div>
         </div>
     );

@@ -4,7 +4,7 @@ import Navbar from "./Navbar";
 
 export default function ClientNavbar() {
     const pathname = usePathname();
-    const hideNavbar = pathname === "/login" || pathname === "/register" || pathname === "/profile";
+    const hideNavbar = pathname === "/profile" || pathname === "/interview";
 
     return !hideNavbar ? <Navbar /> : null;
 }
