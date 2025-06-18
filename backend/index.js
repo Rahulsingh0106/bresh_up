@@ -13,7 +13,7 @@ dotenv.config();
 const app = express();
 app.use(cookieParser()); // ✅ Use cookie-parser middleware
 app.use(cors({
-    origin: "http://localhost:3000",  // Frontend URL
+    origin: "https://bresh-up.vercel.app",  // Frontend URL
     credentials: true,
 }));
 app.use(express.json({ limit: "10mb" }));
