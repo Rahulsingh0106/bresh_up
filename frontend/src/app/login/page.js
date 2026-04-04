@@ -21,7 +21,6 @@ export default function LoginPage() {
         setErrors({}); // Clear previous errors
         if (!form.email || !form.password) {
             toast.error("Email and password fields are required.")
-            // setErrors({ login_error: "Email and password are required" });
             return;
         }
 
@@ -35,18 +34,18 @@ export default function LoginPage() {
 
             const data = await res.json();
             if (!res.ok) {
-                toast.error(JSON.stringify(data.error))
+                toast.error(data.error || "Login failed.");
             }
             else {
-                toast.success("User login successfully.")
+                toast.success("User logged in successfully.")
                 localStorage.setItem("token", JSON.stringify(data.data));
 
                 // Redirect to Dashboard
-                router.push("/dashboard");
+                window.location.href = '/dashboard';
             }
 
         } catch (error) {
-            toast.error("Something went wrong! Please try later again.")
+            toast.error("Something went wrong! Please try again later.")
         }
     };
 
@@ -57,45 +56,47 @@ export default function LoginPage() {
     }, [router]);
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-100 ">
-            <Card className="w-[400px] shadow-md p-3">
+        <div className="flex flex-1 items-center justify-center bg-slate-900 px-4 min-h-[calc(100vh-80px)]">
+            <Card className="w-full max-w-[400px] shadow-md bg-slate-800 border-slate-700 text-slate-200">
                 <CardHeader>
-                    <CardTitle className="text-center text-2xl">Login</CardTitle>
+                    <CardTitle className="text-center text-2xl font-bold text-white">Login</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    {errors.login_error && <p className="text-red-500 text-sm">{errors.login_error}</p>}
-                    <div>
-                        <Label htmlFor="email" className="mb-2">Email</Label>
+                    {errors.login_error && <p className="text-red-400 text-sm">{errors.login_error}</p>}
+                    <div className="space-y-2">
+                        <Label htmlFor="email" className="text-slate-300">Email</Label>
                         <Input
                             id="email"
                             type="email"
                             name="email"
                             placeholder="Enter your email"
                             onChange={handleChange}
+                            className="bg-slate-900 border-slate-700 text-slate-200 placeholder:text-slate-500"
                         />
                     </div>
 
-                    <div>
-                        <Label htmlFor="password" className="mb-2">Password</Label>
+                    <div className="space-y-2">
+                        <Label htmlFor="password" className="text-slate-300">Password</Label>
                         <Input
                             id="password"
                             type="password"
                             name="password"
                             placeholder="Enter your password"
                             onChange={handleChange}
+                            className="bg-slate-900 border-slate-700 text-slate-200 placeholder:text-slate-500"
                         />
                     </div>
 
                     <Button
-                        className="w-full text-white"
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium"
                         onClick={handleSubmit}
                     >
                         Login
                     </Button>
 
-                    <p className="text-sm text-gray-500 text-center">
+                    <p className="text-sm text-slate-400 text-center mt-4">
                         Don't have an account?{" "}
-                        <Link href="/register" className="text-blue-500 hover:underline">
+                        <Link href="/register" className="text-blue-400 hover:underline">
                             Sign up
                         </Link>
                     </p>

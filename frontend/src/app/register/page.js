@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import toast from 'react-hot-toast';
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -20,6 +21,7 @@ export default function RegisterPage() {
         if (!form.name) newErrors.name = "Name is required";
         if (!form.email) newErrors.email = "Email is required";
         if (!form.password) newErrors.password = "Password is required";
+        if (!resume) newErrors.resume = "Resume is required";
         return newErrors;
     };
 
@@ -33,10 +35,6 @@ export default function RegisterPage() {
         setErrors({ ...errors, [e.target.name]: "" });
     };
 
-    const handleFileChange = (e) => {
-        setForm({ ...form, resume: e.target.files[0] });
-        setErrors({ ...errors, resume: "" }); // Clear error
-    };
     // Handle Form Submission
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -58,31 +56,37 @@ export default function RegisterPage() {
             });
 
             const data = await res.json();
-            if (!res.ok) throw new Error(data.message || "Login failed");
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("user", JSON.stringify(data.user));
+            if (!res.ok) {
+                toast.error(data.error || "Registration failed");
+                return;
+            }
+            
+            toast.success("User registered successfully");
+            localStorage.setItem("token", JSON.stringify(data.data));
 
             // Redirect to Dashboard
-            router.push("/profile");
+            window.location.href = '/dashboard';
         } catch (error) {
-            setErrors({ "login_error": error.message });
+            toast.error("Something went wrong! Please try again later.");
         }
     };
+
     useEffect(() => {
         if (localStorage.getItem("token")) {
             router.push("/dashboard");
         }
     }, [router]);
+
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-100">
-            <Card className="w-[400px] shadow-md p-3">
+        <div className="flex flex-1 items-center justify-center bg-slate-900 px-4 min-h-[calc(100vh-80px)]">
+            <Card className="w-full max-w-[400px] shadow-md bg-slate-800 border-slate-700 text-slate-200">
                 <CardHeader>
-                    <CardTitle className="text-center text-2xl">Register</CardTitle>
+                    <CardTitle className="text-center text-2xl font-bold text-white">Register</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    {errors.login_error && <p className="text-red-500 text-sm">{errors.login_error}</p>}
-                    <div>
-                        <Label htmlFor="name" className="mb-2">Name</Label>
+                    {errors.login_error && <p className="text-red-400 text-sm">{errors.login_error}</p>}
+                    <div className="space-y-2">
+                        <Label htmlFor="name" className="text-slate-300">Name</Label>
                         <Input
                             id="name"
                             name="name"
@@ -90,13 +94,14 @@ export default function RegisterPage() {
                             placeholder="Enter your name"
                             value={form.name}
                             onChange={handleChange}
+                            className="bg-slate-900 border-slate-700 text-slate-200 placeholder:text-slate-500"
                         />
-                        {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                        {errors.name && <p className="text-red-400 text-sm mt-1">{errors.name}</p>}
                     </div>
 
                     {/* Email Field */}
-                    <div>
-                        <Label htmlFor="email" className="mb-2">Email</Label>
+                    <div className="space-y-2">
+                        <Label htmlFor="email" className="text-slate-300">Email</Label>
                         <Input
                             id="email"
                             name="email"
@@ -104,13 +109,14 @@ export default function RegisterPage() {
                             placeholder="Enter your email"
                             value={form.email}
                             onChange={handleChange}
+                            className="bg-slate-900 border-slate-700 text-slate-200 placeholder:text-slate-500"
                         />
-                        {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                        {errors.email && <p className="text-red-400 text-sm mt-1">{errors.email}</p>}
                     </div>
 
                     {/* Password Field */}
-                    <div>
-                        <Label htmlFor="password" className="mb-2">Password</Label>
+                    <div className="space-y-2">
+                        <Label htmlFor="password" className="text-slate-300">Password</Label>
                         <Input
                             id="password"
                             name="password"
@@ -118,32 +124,35 @@ export default function RegisterPage() {
                             placeholder="Enter your password"
                             value={form.password}
                             onChange={handleChange}
+                            className="bg-slate-900 border-slate-700 text-slate-200 placeholder:text-slate-500"
                         />
-                        {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+                        {errors.password && <p className="text-red-400 text-sm mt-1">{errors.password}</p>}
                     </div>
-                    <div>
-                        <Label htmlFor="name">Resume</Label>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="resume" className="text-slate-300">Resume</Label>
                         <Input
                             id="resume"
                             name="resume"
                             type="file"
-                            placeholder="Please upload your resume"
-                            value={form.resume}
                             onChange={handleChange}
+                            className="bg-slate-900 border-slate-700 text-slate-400 file:text-slate-200 file:bg-slate-800 file:border-none file:mr-4 file:px-4 file:py-1 hover:file:bg-slate-700 cursor-pointer"
                         />
+                        {errors.resume && <p className="text-red-400 text-sm mt-1">{errors.resume}</p>}
                     </div>
+                    
                     {/* Register Button */}
                     <Button
-                        className="w-full text-white"
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium"
                         onClick={handleSubmit}
                     >
                         Register
                     </Button>
 
                     {/* Redirect to Login */}
-                    <p className="text-sm text-gray-500 text-center">
+                    <p className="text-sm text-slate-400 text-center mt-4">
                         Already have an account?{" "}
-                        <Link href="/login" className="text-blue-500 hover:underline">
+                        <Link href="/login" className="text-blue-400 hover:underline">
                             Login
                         </Link>
                     </p>

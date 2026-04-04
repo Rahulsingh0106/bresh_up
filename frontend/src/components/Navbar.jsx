@@ -39,7 +39,7 @@ export default function Navbar() {
         if (res.status === 200) {
             localStorage.removeItem("token"); // ✅ Remove key from localStorage
             toast.success("User logged out successfully.");
-            router.push("/login");
+            window.location.href = '/login';
         }
     };
 
@@ -49,7 +49,7 @@ export default function Navbar() {
                 {/* Left Side - Logo */}
                 <div className="flex items-center">
                     <Link
-                        href="/dashboard"
+                        href={isLogin ? "/dashboard" : "/"}
                         className="text-xl font-bold text-slate-400 hover:text-white"
                     >
                         BreshUP
@@ -69,6 +69,15 @@ export default function Navbar() {
 
                 {/* Desktop Menu */}
                 <div className="hidden md:flex items-center space-x-6">
+                    {isLogin ? (
+                        <Link href="/dashboard" className="font-bold text-slate-400 hover:text-white">
+                            Dashboard
+                        </Link>
+                    ) : (
+                        <Link href="/" className="font-bold text-slate-400 hover:text-white">
+                            Home
+                        </Link>
+                    )}
                     <Link
                         href="/roadmap"
                         className="font-bold text-slate-400 hover:text-white"
@@ -105,12 +114,12 @@ export default function Navbar() {
                         <>
                             <Link
                                 href="/login"
-                                className="font-bold text-slate-400 hover:text-white"
+                                className="font-bold text-slate-400 hover:text-white text-sm"
                             >
                                 Login
                             </Link>
                             <Link href="/register">
-                                <Button className="bg-blue-500 text-white hover:bg-blue-600 font-medium px-4 py-2 rounded-md transition-colors">
+                                <Button className="bg-blue-500 text-white hover:bg-blue-600 font-medium px-4 py-2 rounded-md transition-colors text-sm">
                                     Signup
                                 </Button>
                             </Link>
@@ -121,6 +130,21 @@ export default function Navbar() {
                 {/* Mobile Menu */}
                 {isOpen && (
                     <div className="absolute top-16 left-0 w-full bg-slate-800 shadow-md flex flex-col items-center space-y-4 py-4 md:hidden z-50">
+                        {isLogin ? (
+                            <Link
+                                href="/dashboard"
+                                className="text-slate-400 hover:text-white transition"
+                            >
+                                Dashboard
+                            </Link>
+                        ) : (
+                            <Link
+                                href="/"
+                                className="text-slate-400 hover:text-white transition"
+                            >
+                                Home
+                            </Link>
+                        )}
                         <Link
                             href="/roadmap"
                             className="text-slate-400 hover:text-white transition"
@@ -148,7 +172,7 @@ export default function Navbar() {
                                 >
                                     Login
                                 </Link>
-                                <Link href="/signup">
+                                <Link href="/register">
                                     <Button className="bg-blue-500 text-white hover:bg-blue-600 font-medium px-4 py-2 rounded-md transition-colors">
                                         Signup
                                     </Button>

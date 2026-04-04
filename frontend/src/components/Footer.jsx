@@ -3,61 +3,30 @@ import React from 'react'
 
 export default function Footer() {
     return (
-        <div class="bg-slate-900 py-6 pb-10 text-white sm:py-16">
-            <div class="container">
-                <p class="mb-8 flex flex-col justify-center gap-0 font-medium text-gray-400 sm:mb-16 sm:flex-row sm:gap-4">
-                    <a class="border-b border-b-gray-700 px-2 py-1.5 transition-colors hover:text-white sm:border-b-0 sm:px-0 sm:py-0" href="/roadmaps">
-                        Roadmaps
-                    </a>
-                    <a class="border-b border-b-gray-700 px-2 py-1.5 transition-colors hover:text-white sm:border-b-0 sm:px-0 sm:py-0" href="/best-practices">
-                        Best Practices
-                    </a>
-                    <a class="border-b border-b-gray-700 px-2 py-1.5 transition-colors hover:text-white sm:border-b-0 sm:px-0 sm:py-0" href="/guides">
-                        Guides
-                    </a>
-                    <a class="border-b border-b-gray-700 px-2 py-1.5 transition-colors hover:text-white sm:border-b-0 sm:px-0 sm:py-0" href="/videos">
-                        Videos
-                    </a>
-                    <a class="border-b border-b-gray-700 px-2 py-1.5 transition-colors hover:text-white sm:border-b-0 sm:px-0 sm:py-0" href="/about">
-                        FAQs
-                    </a>
-                    <a class="px-2 py-1.5 transition-colors hover:text-white sm:border-b-0 sm:px-0 sm:py-0" href="https://youtube.com/theroadmap?sub_confirmation=1" target="_blank">
-                        YouTube
-                    </a>
-                </p>
-                <div class="flex flex-col justify-between gap-8 lg:gap-2 lg:flex-row">
-                    <div class="max-w-[425px]">
-                        <p class="text-md flex items-center">
-                            <a class="inline-flex items-center text-lg font-medium text-white transition-colors hover:text-gray-400" href="/">
+        <div className="bg-slate-900 py-6 text-white sm:py-12 border-t border-slate-800">
+            <div className="container mx-auto px-4 md:px-8">
+                <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
+                    <div className="text-center md:text-left">
+                        <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">
+                            BreshUP
+                        </span>
+                        <p className="mt-2 text-sm text-gray-400">
+                            AI-powered developer interview preparation platform.
+                        </p>
+                    </div>
 
-                                <span class="ml-2">
-                                    roadmap.sh
-                                </span>
+                    <div className="flex flex-col items-center gap-4 md:items-end">
+                        <div className="flex gap-4">
+                            <a href="https://github.com/Rahulsingh0106" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+                                GitHub
                             </a>
-                            <span class="mx-2 text-gray-400">
-                                by
-                            </span>
-                            <a class="font-regular rounded-md bg-blue-600 px-1.5 py-1 text-sm hover:bg-blue-700" href="https://x.com/kamrify" target="_blank">
-                                <span class="hidden sm:inline">
-                                    @kamrify
-                                </span>
-                                <span class="inline sm:hidden">
-                                    @kamrify
-                                </span>
+                            <a href="https://www.linkedin.com/in/rahulsingh0106/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+                                LinkedIn
                             </a>
-                        </p>
-                        <p class="my-4 text-slate-300/60">
-                            Community created roadmaps, best practices, projects, articles, resources and journeys to help
-                            you choose your path and grow in your career.
-                        </p>
-                        <div class="text-sm text-gray-400">
-                            <p>
-                                © roadmap.sh
-                                <span class="mx-1.5">·</span>
-                                <a href="/terms" class="hover:text-white">Terms</a> <span class="mx-1.5">·</span> <a href="/privacy" class="hover:text-white">Privacy</a> <span class="mx-1.5">·</span> <a href="/advertise" class="hover:text-white">Advertise</a> <span class="mx-1.5">·</span> <a aria-label="Write us an email" href="mailto:info@roadmap.sh" class="hover:text-white"> </a> </p> </div> </div> <div class="max-w-[340px] text-left lg:text-right"> <a href="https://thenewstack.io/?__hstc=116221849.f1b5bb8c62b9e061f7585679264fe99a.1746574937082.1746605219924.1746624346885.5&amp;__hssc=116221849.7.1746624346885&amp;__hsfp=2101919438" target="_blank"> </a> <p class="my-4 text-slate-300/60">
-                                    The top DevOps resource for Kubernetes, cloud-native computing, and large-scale development and deployment.
-                                </p> <div class="text-sm text-gray-400"> <p> <a href="https://thenewstack.io/category/devops?utm_source=roadmap.sh&amp;utm_medium=Referral&amp;utm_campaign=Footer&amp;__hstc=116221849.f1b5bb8c62b9e061f7585679264fe99a.1746574937082.1746605219924.1746624346885.5&amp;__hssc=116221849.7.1746624346885&amp;__hsfp=2101919438" target="_blank" class="text-gray-400 hover:text-white">DevOps</a> <span class="mx-1.5">·</span> <a href="https://thenewstack.io/category/kubernetes?utm_source=roadmap.sh&amp;utm_medium=Referral&amp;utm_campaign=Footer&amp;__hstc=116221849.f1b5bb8c62b9e061f7585679264fe99a.1746574937082.1746605219924.1746624346885.5&amp;__hssc=116221849.7.1746624346885&amp;__hsfp=2101919438" target="_blank" class="text-gray-400 hover:text-white">Kubernetes</a> <span class="mx-1.5">·</span> <a href="https://thenewstack.io/category/cloud-native?utm_source=roadmap.sh&amp;utm_medium=Referral&amp;utm_campaign=Footer&amp;__hstc=116221849.f1b5bb8c62b9e061f7585679264fe99a.1746574937082.1746605219924.1746624346885.5&amp;__hssc=116221849.7.1746624346885&amp;__hsfp=2101919438" target="_blank" class="text-gray-400 hover:text-white">Cloud-Native</a> </p>
                         </div>
+                        <p className="text-sm text-gray-400">
+                            © 2025 BreshUP. Built by Rahul Singh
+                        </p>
                     </div>
                 </div>
             </div>

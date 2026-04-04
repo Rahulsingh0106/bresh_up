@@ -9,7 +9,9 @@ export default function RoleBasedRoadmap() {
                     Role-based Roadmaps
                 </h2>
                 <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
-                    <li> <Chip title="Frontend" href="/frontend" /></li>
+                    <li> <Chip title="Frontend" href="/roadmap/frontend" /></li>
+                    <li> <Chip title="Backend" href="/roadmap/backend" /></li>
+                    <li> <Chip title="DSA" href="/roadmap/dsa" /></li>
                     <li> <CreateYourRoadmapBtn /></li>
                 </ul>
             </div>
