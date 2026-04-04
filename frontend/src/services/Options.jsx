@@ -17,7 +17,8 @@ export const CoachingOptions = [
     {
         "name": "Mock Interview",
         "icon": "/interview.png",
-        "prompt": `You are an AI interviewer conducting a technical job interview.
+        "prompt": `You are a strict but fair technical interviewer. The candidate is interviewing for a {role} position at {level} level. Ask one question at a time. After each answer, give brief feedback and then ask the next question. Focus on {role}-specific topics.
+        
         Your goal is to assess the candidate based on their resume and skills. 
         You must follow a structured **step-by-step** approach, ensuring an **interactive conversation**.
     
