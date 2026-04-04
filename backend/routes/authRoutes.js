@@ -47,8 +47,17 @@ router.post("/register", upload.single("resume"), async (req, res) => {
         await newUser.save();
 
         const user = await User.findOne({ email });
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
-        res.status(201).json({ message: "User registered successfully", token });
+        const token = jwt.sign({ data: user }, process.env.JWT_SECRET, { expiresIn: "1d" });
+        
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            path: "/",
+            maxAge: 24 * 60 * 60 * 1000,
+        });
+
+        res.status(201).json({ message: "User registered successfully", data: { user_details: user, token: token } });
     } catch (error) {
         res.status(500).json({ error: `Server error ${error}` });
     }
@@ -72,21 +81,22 @@ router.post("/login", async (req, res) => {
         const token = jwt.sign({ data: user }, process.env.JWT_SECRET, { expiresIn: "1d" });
         res.cookie("token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV,
+            secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
             path: "/",
             maxAge: 24 * 60 * 60 * 1000,
         });
         res.status(200).json({ message: "Login Successfully", data: { user_details: user, token: token } });
     } catch (error) {
-        res.status(500).json({ error: "Server error" });
+        console.error("Login Server Error:", error);
+        res.status(500).json({ error: error.message || "Server error" });
     }
 })
 
 router.post("/logout", async (req, res) => {
     await res.clearCookie("token", {
         httpOnly: true,
-        secure: process.env.NODE_ENV,
+        secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
         path: "/",
     });
