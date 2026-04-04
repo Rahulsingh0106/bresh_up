@@ -8,6 +8,7 @@ const resumeRoutes = require("./routes/resumeRoutes");
 const profileRoutes = require("./routes/profileRoutes");
 const speechToTextRoutes = require("./routes/speechToTextRoutes");
 const roadmapRoute = require('./routes/roadmapRoutes');
+const interviewRoutes = require('./routes/interviewRoutes');
 
 dotenv.config();
 const app = express();
@@ -27,5 +28,8 @@ app.use("/api/resume", resumeRoutes);
 // roadmap routes
 app.use("/api/roadmap/", roadmapRoute);
 app.use('/api', speechToTextRoutes);
+// interview routes
+app.use("/api/interview", interviewRoutes);
+
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`✅ Server running on port ${port}`));
