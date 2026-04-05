@@ -4,15 +4,19 @@ const authMiddleware = (req, res, next) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        return res.status(200).json({ message: "Unauthorized" })
+        return res.status(401).json({ error: "Unauthorized" })
     }
     const token = authHeader.split(" ")[1];
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
-        req.user = decoded
+        // Normalize req.user to make properties easily accessible
+        req.user = decoded.data || decoded;
+        if (req.user && req.user._id) {
+            req.user.id = req.user._id;
+        }
         next()
     } catch (error) {
-        res.status(403, "Invalid Token")
+        res.status(403).json({ error: "Invalid Token" })
     }
 }
 

@@ -1,45 +1,52 @@
 const express = require('express');
 const router = express.Router();
+const authMiddleware = require('../middleware/Auth');
+const InterviewSession = require('../models/InterviewSession');
+const User = require('../models/User');
+const { generateScoreReport } = require('../utils/geminiHelper');
 
-router.post('/feedback', (req, res) => {
-    // Generate a static mock JSON report
-    // In a real application, we would pass req.body.conversation to the AI to generate this JSON
-    
-    const mockReport = {
-        overallScore: 8,
-        communicationScore: 9,
-        technicalScore: 7,
-        problemSolvingScore: 8,
-        strengths: [
-            "Clear and articulate communication",
-            "Strong understanding of core syntax and principles",
-            "Good structured thinking process"
-        ],
-        improvements: [
-            "Could dive deeper into system scalability nuances",
-            "Consider edge cases more thoroughly",
-            "Hesitated on the advanced framework question"
-        ],
-        topicsToRevise: [
-            "Advanced Hooks optimization",
-            "Load balancer configurations",
-            "Database indexing strategies"
-        ],
-        questionFeedback: [
-            {
-                question: "Can you explain the difference between useMemo and useCallback in React?",
-                yourAnswer: "useMemo is for caching values, and useCallback is for caching functions so they don't get recreated.",
-                feedback: "Good answer. You hit the main point. To improve, mention reference equality and how it prevents unnecessary child component re-renders."
-            },
-            {
-                question: "How would you design a URL shortener system?",
-                yourAnswer: "I would use a NoSQL database and a hash function to generate the short code when a user submits a long URL.",
-                feedback: "A decent high-level start. However, you missed discussing collision management for the hash, read/write ratios, and how caching (like Redis) would be crucial here."
-            }
-        ]
-    };
+router.post('/feedback', authMiddleware, async (req, res) => {
+    try {
+        const { conversation, setupData } = req.body;
+        const userId = req.user.id;
 
-    res.status(200).json(mockReport);
+        // Generate report from transcript
+        const scoreReport = await generateScoreReport(conversation || []);
+
+        // Save session if setupData is provided
+        if (setupData) {
+            const session = new InterviewSession({
+                userId,
+                role: setupData.role || 'Unknown',
+                level: setupData.level || 'Unknown',
+                duration: setupData.duration || 0,
+                transcript: conversation,
+                scoreReport: scoreReport
+            });
+            await session.save();
+
+            // Update user streak / last active here if needed
+            await User.findByIdAndUpdate(userId, { 
+                lastActive: new Date(),
+                $inc: { streak: 1 } // Naive streak logic for now
+            });
+        }
+
+        res.status(200).json(scoreReport);
+    } catch (error) {
+        console.error("Interview feedback error:", error);
+        res.status(500).json({ error: "Failed to generate report" });
+    }
+});
+
+router.get('/history', authMiddleware, async (req, res) => {
+    try {
+        const sessions = await InterviewSession.find({ userId: req.user.id }).sort({ startedAt: -1 });
+        res.status(200).json({ data: sessions });
+    } catch (error) {
+        console.error("Fetch history error:", error);
+        res.status(500).json({ error: "Failed to fetch history" });
+    }
 });
 
 module.exports = router;
