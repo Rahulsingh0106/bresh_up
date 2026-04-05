@@ -1,4 +1,5 @@
 "use client";
+import Logo from "@/components/ui/logo";
 import {
     DropdownMenu,
     DropdownMenuTrigger,
@@ -48,11 +49,8 @@ export default function Navbar() {
             <nav className="container mx-auto px-4 py-5 flex items-center justify-between">
                 {/* Left Side - Logo */}
                 <div className="flex items-center">
-                    <Link
-                        href={isLogin ? "/dashboard" : "/"}
-                        className="text-xl font-bold text-slate-400 hover:text-white"
-                    >
-                        BreshUP
+                    <Link href={isLogin ? "/dashboard" : "/"} className="hover:opacity-90 transition-opacity">
+                        <Logo />
                     </Link>
                 </div>
 

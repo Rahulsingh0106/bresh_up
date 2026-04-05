@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
+import Logo from "@/components/ui/logo";
 
 export default function AuthSplitLayout({ children, title }) {
   const highlights = [
@@ -18,8 +19,8 @@ export default function AuthSplitLayout({ children, title }) {
         <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-violet-500/20 rounded-full blur-3xl opacity-50" />
 
         <div className="relative z-10">
-          <Link href="/" className="text-3xl font-bold text-white flex items-center gap-2">
-            Bresh<span className="text-indigo-400">UP</span>
+          <Link href="/" className="inline-block hover:opacity-90 transition-opacity">
+            <Logo />
           </Link>
           <div className="mt-16 max-w-md">
             <h1 className="text-4xl font-bold text-white tracking-tight mb-4">
@@ -49,8 +50,8 @@ export default function AuthSplitLayout({ children, title }) {
         <div className="w-full max-w-md space-y-8">
           {/* Mobile logo header (hidden on large screens) */}
           <div className="lg:hidden text-center mb-8">
-            <Link href="/" className="inline-block text-3xl font-bold text-foreground">
-              Bresh<span className="text-indigo-600 dark:text-indigo-400">UP</span>
+            <Link href="/" className="inline-block hover:opacity-90 transition-opacity">
+              <Logo className="justify-center" />
             </Link>
           </div>
           {children}

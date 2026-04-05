@@ -28,8 +28,15 @@ const ChatBox = ({ conversation, userInput, setUserInput, sendMsg, enableMic, lo
                         placeholder="Type a message..."
                         value={userInput}
                         onChange={(e) => setUserInput(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' && !loading) {
+                                sendMsg();
+                            }
+                        }}
                     />
-                    {!enableMic ? <Button onClick={sendMsg} disabled={!loading}>{loading && < Loader2Icon className="animate-spin" />} Send</Button> : <Button onClick={sendMsg} disabled={loading}>{loading && < Loader2Icon className="animate-spin" />} Send</Button>}
+                    <Button onClick={sendMsg} disabled={loading || !userInput.trim()}>
+                        {loading && <Loader2Icon className="animate-spin mr-2 h-4 w-4" />} Send
+                    </Button>
                 </div>
             </div>
         </div>

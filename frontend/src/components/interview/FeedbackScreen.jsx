@@ -17,18 +17,21 @@ const ScoreBadge = ({ score, label }) => {
   );
 };
 
-export default function FeedbackScreen({ conversation, onRetake }) {
+export default function FeedbackScreen({ conversation, setupData, onRetake }) {
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchFeedback = async () => {
       try {
-        // Mock API call to get feedback using the conversation history
+        const tokenData = localStorage.getItem("token") ? JSON.parse(localStorage.getItem("token")) : null;
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5000'}/api/interview/feedback`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ conversation }),
+          headers: { 
+            "Content-Type": "application/json",
+            "Authorization": tokenData ? `Bearer ${tokenData.token || tokenData}` : ""
+          },
+          body: JSON.stringify({ conversation, setupData }),
         });
         
         if (!res.ok) throw new Error("Failed to fetch report");

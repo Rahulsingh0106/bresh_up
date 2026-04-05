@@ -1,5 +1,6 @@
 "use client";
-import React from 'react'
+import React from 'react';
+import Logo from "@/components/ui/logo";
 
 export default function Footer() {
     return (
@@ -7,9 +8,9 @@ export default function Footer() {
             <div className="container mx-auto px-4 md:px-8">
                 <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
                     <div className="text-center md:text-left">
-                        <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">
-                            BreshUP
-                        </span>
+                        <div className="mb-2">
+                            <Logo />
+                        </div>
                         <p className="mt-2 text-sm text-gray-400">
                             AI-powered developer interview preparation platform.
                         </p>
